@@ -26,7 +26,7 @@ public class Main {
         for(int i=1; i<7; i++) {
         	for(int j=0; j<2; j++) {
         		if(students[i][j] > 0 ) {
-        			cnt += students[i][j] / N + students[i][j] % N;
+        			cnt += (students[i][j] / N) + ((students[i][j] % N == 0) ? 0 : 1);
         		}
         	}
         	
