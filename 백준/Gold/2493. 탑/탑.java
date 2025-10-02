@@ -19,26 +19,30 @@ public class Main {
 		ArrayDeque<int[]> stack = new ArrayDeque<>();
 		arr = new int[N+1];
 		
-		for(int i=1; i<=N; i++) { // 0 dummy
-			int now =  Integer.parseInt(st.nextToken());
+		for(int i=1; i<=N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		int[] res = new int[N+1];
+		// 가장 오른쪽부터 와야 하니까.
+		for(int i=N; i>0; i--) {
+			// now = arr[i];
 			
-			while(!stack.isEmpty() && stack.peek()[0] < now) {
-				stack.pop(); // 작으면 아무도 못받으니까 삭제
+			while(!stack.isEmpty() && stack.peek()[0] < arr[i]) {
+				int[] top = stack.pop();
+				res[top[1]] = i; 
 			}
 			
-			if(!stack.isEmpty())
-				arr[i] = stack.peek()[1]; //수신하는 탑의 idx
-			else
-				arr[i] = 0; 			
-			
-			stack.push(new int[] {now, i});
+			stack.push(new int[] {arr[i], i});
 		}
 		
 		StringBuilder sb = new StringBuilder();
 		for(int i=1; i<=N; i++)
-			sb.append(arr[i]).append(" ");
+			sb.append(res[i]).append(" ");
 		
 		System.out.println(sb);
 	}
+		
+
 
 }
