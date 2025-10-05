@@ -1,59 +1,55 @@
 import java.util.*;
 import java.io.*;
 
+/*
+ * 물은 요리로 count X -> 재료를 count해야 함.
+ * 신맛과 쓴맛의 차이가 가장 작은 요리
+ */
 public class Main {
-	
 	static int N;
 	static int Min = Integer.MAX_VALUE;
+	static int[][] cook;
 	static boolean[] select;
-	static int[][] arr;
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine()); // 테스트의 개수
+		N = Integer.parseInt(br.readLine());
 		
+		cook = new int[N][2];
 		select = new boolean[N];
-		arr = new int[N][2];
 		for(int i=0; i<N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			arr[i][0] = Integer.parseInt(st.nextToken()); // 신말 X
-			arr[i][1] = Integer.parseInt(st.nextToken()); // 쓴맛 +
-
+			cook[i][0] = Integer.parseInt(st.nextToken()); // 신맛
+			cook[i][1] = Integer.parseInt(st.nextToken()); // 쓴맛
 		}
-			
-		subset(0); //첫번째 재료부터 시작
+		subset(0);
 		System.out.println(Min);
-		
 	}
-	
-	//부분집합을 진행할 떄 TFTF로 진행하여 만약 T라면 조합이 되고 그런 식
-	static void subset(int srcIdx) { 
-		// 기저조건
-		if(srcIdx == arr.length) {
-			int sin = 1;
-			int ssn = 0;
-			int cnt = 0; // 사용한 재료의 개수
+
+	static void subset(int idx) {
+		if(idx == N) {
+			int sin = 1; // 곱
+			int ssn = 0; // 합
+			int cnt = 0; // 재료의 개수
 			
 			for(int i=0; i<N; i++) {
-				if(select[i]) {
-					sin *= arr[i][0];
-					ssn += arr[i][1];
+				if(select[i]) { // 재료가 선택된 경우에만
+					sin *= cook[i][0];
+					ssn += cook[i][1];
 					cnt++;
 				}
 			}
-			
-			if(cnt > 0)
+			if(cnt > 0) { // 한 개이상
 				Min = Math.min(Min, Math.abs(sin - ssn));
-			
+			}
 			return;
-
 		}
 		
-		select[srcIdx] = true;
-		subset(srcIdx + 1);
+		select[idx] = true;
+		subset(idx+1);
 		
-		select[srcIdx] = false;
-		subset(srcIdx + 1);
+		select[idx] = false;
+		subset(idx+1);
+		
 	}
-	
 }
